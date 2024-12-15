@@ -1,19 +1,19 @@
 <?php
-$host = getenv('POSTGRES_HOST') ?: 'aws-0-ap-southeast-1.pooler.supabase.com';
-$user = getenv('POSTGRES_USER') ?: 'postgres.qecotzvnfguaxaahnanu';
-$pass = getenv('POSTGRES_PASSWORD') ?: 'P4EizpXzzThDXIII';
-$db   = getenv('POSTGRES_DATABASE') ?: 'postgres';
-$port = getenv('POSTGRES_PORT') ?: '6543';
+$host = getenv('POSTGRES_HOST');
+$port = getenv('POSTGRES_PORT');
+$dbname = getenv('POSTGRES_DATABASE');
+$user = getenv('POSTGRES_USER');
+$password = getenv('POSTGRES_PASSWORD');
+
+$dsn = "pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require";
 
 try {
-    $connection_string = "host=$host port=$port dbname=$db user=$user password=$pass sslmode=require";
-    $koneksi = pg_connect($connection_string);
-    
-    if (!$koneksi) {
-        throw new Exception("Koneksi database gagal: " . pg_last_error());
-    }
-} catch (Exception $e) {
-    die("Error: " . $e->getMessage());
+    $koneksi = new PDO($dsn, $user, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+    ]);
+} catch(PDOException $e) {
+    die("Koneksi gagal: " . $e->getMessage());
 }
 ?>
 
