@@ -1,6 +1,6 @@
 <?php
-include('koneksi.php');
-include('template/header.php');
+include(__DIR__ . '/koneksi.php');
+include(__DIR__ . '/template/header.php');
 
 // Inisialisasi variabel pencarian dan pengurutan
 $search = isset($_GET['search']) ? $_GET['search'] : '';
@@ -299,5 +299,5 @@ $result = pg_query($koneksi, $query);
 </section>
 
 <?php
-include('template/footer.php');
+include(__DIR__ . '/template/footer.php');
 ?>

@@ -1,6 +1,6 @@
 <?php
-include('koneksi.php');
-include('template/header.php');
+include(__DIR__ . '/koneksi.php');
+include(__DIR__ . '/template/header.php');
 
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 
