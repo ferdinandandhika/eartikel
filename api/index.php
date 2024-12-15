@@ -1,6 +1,11 @@
 <?php
-include(__DIR__ . '/koneksi.php');
-include(__DIR__ . '/template/header.php');
+// Strict error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Include files
+require_once __DIR__ . '/koneksi.php';
+require_once __DIR__ . '/template/header.php';
 
 // Inisialisasi variabel pencarian dan pengurutan
 $search = isset($_GET['search']) ? clean($_GET['search']) : '';

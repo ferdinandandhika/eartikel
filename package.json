@@ -8,7 +8,7 @@
     "deploy": "vercel --prod"
   },
   "dependencies": {
-    "vercel-php": "0.6.0"
+    "@vercel/php": "^0.6.0"
   },
   "devDependencies": {
     "@vercel/node": "^2.15.1"
