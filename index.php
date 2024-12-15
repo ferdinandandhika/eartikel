@@ -14,7 +14,7 @@ $query_kategori = "SELECT k.*, COUNT(m.id) as jumlah_artikel
                   LEFT JOIN mading m ON k.id = m.kategori_id AND m.status = 'published'
                   GROUP BY k.id 
                   ORDER BY k.nama ASC";
-$result_kategori = $koneksi->query($query_kategori);
+$result_kategori = pg_query($koneksi, $query_kategori);
 ?>
 
 <style>
@@ -199,7 +199,7 @@ if (!empty($search)) {
 // Tambahkan pengurutan
 $query .= " ORDER BY m.tanggal DESC LIMIT 6";
 
-$result = $koneksi->query($query);
+$result = pg_query($koneksi, $query);
 ?>
 
 <section class="section">
@@ -230,7 +230,7 @@ $result = $koneksi->query($query);
                     <a href="index.php" class="btn <?php echo empty($kategori_filter) ? 'btn-primary' : 'btn-outline-primary'; ?>">
                         Semua Artikel
                     </a>
-                    <?php while ($kategori = $result_kategori->fetch_assoc()): ?>
+                    <?php while ($kategori = pg_fetch_assoc($result_kategori)): ?>
                         <a href="?kategori=<?php echo $kategori['id']; ?>" 
                            class="btn <?php echo ($kategori_filter == $kategori['id']) ? 'btn-primary' : 'btn-outline-primary'; ?>">
                             <?php echo htmlspecialchars($kategori['nama']); ?> 
@@ -268,8 +268,8 @@ $result = $koneksi->query($query);
 
 		<div class="row">
 			<?php 
-			if ($result->num_rows > 0) {
-				while ($row = $result->fetch_assoc()): 
+			if (pg_num_rows($result) > 0) {
+				while ($row = pg_fetch_assoc($result)): 
 			?>
 			<div class="col-lg-4 mb-4">
 				<div class="post-entry-alt">
