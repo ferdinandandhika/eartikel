@@ -7,7 +7,8 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-include('../koneksi.php');
+include(__DIR__ . '/../koneksi.php');
+include(__DIR__ . '/template/header.php');
 
 // Proses untuk menghapus data
 if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
@@ -33,8 +34,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'publish' && isset($_GET['id'])
         $error = "Gagal mempublikasikan artikel: " . $stmt->error;
     }
 }
-
-include("template/header.php");
 
 // Ambil data draft dari database
 $query = "SELECT * FROM mading WHERE status = 'draft' ORDER BY tanggal DESC";
@@ -126,6 +125,6 @@ $result = $koneksi->query($query);
 <!-- / Content -->
 
 <?php
-include("template/footer.php");
+include(__DIR__ . '/template/footer.php');
 ob_end_flush();
 ?>

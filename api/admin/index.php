@@ -1,4 +1,7 @@
 <?php
+include(__DIR__ . '/../koneksi.php');
+include(__DIR__ . '/template/header.php');
+
 ob_start(); // Mulai output buffering
 session_start();
 
@@ -6,8 +9,6 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../login.php");
     exit();
 }
-
-include('../koneksi.php'); // Pastikan koneksi database sudah di-include
 
 // Proses untuk menghapus data
 if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
@@ -27,8 +28,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     header("Location: ../index.php");
     exit();
 }
-
-include("template/header.php");
 
 // Ambil data dari database
 $query = "SELECT m.*, k.nama as kategori_nama 
@@ -133,6 +132,6 @@ $result = $koneksi->query($query);
 <!-- / Content -->
 
 <?php
-include("template/footer.php");
+include(__DIR__ . '/template/footer.php');
 ob_end_flush(); // Akhiri dan kirim output buffer
 ?>

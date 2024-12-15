@@ -99,5 +99,5 @@ function openImageModal() {
 </script>
 
 <?php
-include('template/footer.php');
+include(__DIR__ . '/template/footer.php');
 ?>

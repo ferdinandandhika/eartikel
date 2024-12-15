@@ -7,7 +7,8 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-include('../koneksi.php');
+include(__DIR__ . '/../koneksi.php');
+include(__DIR__ . '/template/header.php');
 
 // Ambil daftar kategori
 $query_kategori = "SELECT * FROM kategori ORDER BY nama ASC";
@@ -45,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-include("template/header.php");
 ?>
 
 <!-- Include Quill stylesheet -->
@@ -141,6 +141,6 @@ include("template/header.php");
 </script>
 
 <?php
-include("template/footer.php");
+include(__DIR__ . '/template/footer.php');
 ob_end_flush();
 ?>

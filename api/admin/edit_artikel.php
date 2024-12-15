@@ -7,7 +7,8 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-include('../koneksi.php');
+include(__DIR__ . '/../koneksi.php');
+include(__DIR__ . '/template/header.php');
 
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 
@@ -71,7 +72,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-include("template/header.php");
 ?>
 
 <!-- Include Quill stylesheet -->
@@ -172,6 +172,6 @@ document.getElementById('kategori').addEventListener('change', function() {
 </script>
 
 <?php
-include("template/footer.php");
+include(__DIR__ . '/template/footer.php');
 ob_end_flush(); // Akhiri dan kirim output buffer
 ?>
