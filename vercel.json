@@ -2,7 +2,10 @@
   "version": 2,
   "framework": null,
   "functions": {
-    "api/**": {
+    "api/**/*.php": {
+      "runtime": "vercel-php@0.6.0"
+    },
+    "api/*.php": {
       "runtime": "vercel-php@0.6.0"
     }
   },
