@@ -1,5 +1,9 @@
 {
   "require": {
-    "php": "^8.1"
+    "php": "^8.1",
+    "ext-pgsql": "*",
+    "ext-pdo": "*",
+    "ext-pdo_pgsql": "*",
+    "ext-openssl": "*"
   }
 } 

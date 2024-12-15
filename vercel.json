@@ -3,7 +3,12 @@
   "builds": [
     {
       "src": "api/**/*.php",
-      "use": "vercel-php@0.6.0"
+      "use": "vercel-php@0.6.0",
+      "config": {
+        "php.ini": {
+          "extension": ["pdo", "pdo_pgsql", "pgsql", "openssl"]
+        }
+      }
     },
     {
       "src": "public/**",
