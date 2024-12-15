@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/*.php",
+      "src": "api/**/*.php",
       "use": "vercel-php@0.6.0"
     },
     {
@@ -21,10 +21,5 @@
     "POSTGRES_PASSWORD": "P4EizpXzzThDXIII",
     "POSTGRES_DATABASE": "postgres",
     "POSTGRES_PORT": "6543"
-  },
-  "build": {
-    "env": {
-      "PHP_VERSION": "8.1"
-    }
   }
 } 
