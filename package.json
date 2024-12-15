@@ -1,0 +1,23 @@
+{
+  "name": "eartikel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ferdinandandhika/eartikel.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ferdinandandhika/eartikel/issues"
+  },
+  "homepage": "https://github.com/ferdinandandhika/eartikel#readme",
+  "dependencies": {
+    "vercel-php": "^0.6.0"
+  }
+}
