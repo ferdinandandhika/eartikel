@@ -2,16 +2,17 @@
   "version": 2,
   "framework": null,
   "functions": {
-    "api/*.php": {
+    "api/**/*.php": {
       "runtime": "vercel-php@0.6.0"
     },
-    "api/**/*.php": {
+    "api/*.php": {
       "runtime": "vercel-php@0.6.0"
     }
   },
   "outputDirectory": "public",
   "routes": [
-    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "/assets/(.*)", "dest": "/public/assets/$1" },
+    { "src": "/api/(.*)\\.php$", "dest": "/api/$1.php" },
     { "src": "/(.*)\\.php$", "dest": "/api/$1.php" },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ],
