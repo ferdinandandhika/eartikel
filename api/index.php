@@ -3,18 +3,39 @@ include(__DIR__ . '/koneksi.php');
 include(__DIR__ . '/template/header.php');
 
 // Inisialisasi variabel pencarian dan pengurutan
-$search = isset($_GET['search']) ? $_GET['search'] : '';
-$sort = isset($_GET['sort']) ? $_GET['sort'] : 'tanggal';
-$order = isset($_GET['order']) ? $_GET['order'] : 'DESC';
-$kategori_filter = isset($_GET['kategori']) ? $_GET['kategori'] : '';
+$search = isset($_GET['search']) ? clean($_GET['search']) : '';
+$sort = isset($_GET['sort']) ? clean($_GET['sort']) : 'tanggal';
+$order = isset($_GET['order']) ? clean($_GET['order']) : 'DESC';
+$kategori_filter = isset($_GET['kategori']) ? (int)$_GET['kategori'] : '';
 
 // Query untuk mengambil semua kategori
 $query_kategori = "SELECT k.*, COUNT(m.id) as jumlah_artikel 
                   FROM kategori k 
                   LEFT JOIN mading m ON k.id = m.kategori_id AND m.status = 'published'
-                  GROUP BY k.id 
+                  GROUP BY k.id, k.nama 
                   ORDER BY k.nama ASC";
-$result_kategori = pg_query($koneksi, $query_kategori);
+$result_kategori = $koneksi->query($query_kategori);
+
+// Modifikasi query utama untuk artikel
+$query = "SELECT m.*, k.nama as kategori_nama 
+          FROM mading m 
+          LEFT JOIN kategori k ON m.kategori_id = k.id 
+          WHERE m.status = 'published'";
+
+// Tambahkan filter kategori jika ada
+if (!empty($kategori_filter)) {
+    $query .= " AND m.kategori_id = " . $kategori_filter;
+}
+
+// Tambahkan pencarian jika ada
+if (!empty($search)) {
+    $query .= " AND (m.judul LIKE '%" . clean($search) . "%' OR m.caption LIKE '%" . clean($search) . "%')";
+}
+
+// Tambahkan pengurutan
+$query .= " ORDER BY m." . clean($sort) . " " . $order . " LIMIT 6";
+
+$result = $koneksi->query($query);
 ?>
 
 <style>
@@ -179,29 +200,6 @@ $result_kategori = pg_query($koneksi, $query_kategori);
     }
 </style>
 
-<?php
-// Modifikasi query utama untuk artikel
-$query = "SELECT m.*, k.nama as kategori_nama 
-          FROM mading m 
-          LEFT JOIN kategori k ON m.kategori_id = k.id 
-          WHERE m.status = 'published'";
-
-// Tambahkan filter kategori jika ada
-if (!empty($kategori_filter)) {
-    $query .= " AND m.kategori_id = " . (int)$kategori_filter;
-}
-
-// Tambahkan pencarian jika ada
-if (!empty($search)) {
-    $query .= " AND (m.judul LIKE '%$search%' OR m.caption LIKE '%$search%')";
-}
-
-// Tambahkan pengurutan
-$query .= " ORDER BY m.tanggal DESC LIMIT 6";
-
-$result = pg_query($koneksi, $query);
-?>
-
 <section class="section">
 	<div class="container">
 
@@ -230,13 +228,19 @@ $result = pg_query($koneksi, $query);
                     <a href="index.php" class="btn <?php echo empty($kategori_filter) ? 'btn-primary' : 'btn-outline-primary'; ?>">
                         Semua Artikel
                     </a>
-                    <?php while ($kategori = pg_fetch_assoc($result_kategori)): ?>
+                    <?php 
+                    if ($result_kategori) {
+                        while ($kategori = $result_kategori->fetch_assoc()): 
+                    ?>
                         <a href="?kategori=<?php echo $kategori['id']; ?>" 
                            class="btn <?php echo ($kategori_filter == $kategori['id']) ? 'btn-primary' : 'btn-outline-primary'; ?>">
-                            <?php echo htmlspecialchars($kategori['nama']); ?> 
+                            <?php echo h($kategori['nama']); ?> 
                             <span class="badge bg-secondary ms-1"><?php echo $kategori['jumlah_artikel']; ?></span>
                         </a>
-                    <?php endwhile; ?>
+                    <?php 
+                        endwhile;
+                    }
+                    ?>
                 </div>
             </div>
         </div>
@@ -268,23 +272,37 @@ $result = pg_query($koneksi, $query);
 
 		<div class="row">
 			<?php 
-			if (pg_num_rows($result) > 0) {
-				while ($row = pg_fetch_assoc($result)): 
+			if ($result && $result->num_rows > 0) {
+				while ($row = $result->fetch_assoc()): 
 			?>
 			<div class="col-lg-4 mb-4">
 				<div class="post-entry-alt">
 					<a href="detail.php?id=<?php echo $row['id']; ?>" class="img-link">
-						<img src="data:image/jpeg;base64,<?php echo base64_encode($row['gambar']); ?>" alt="<?php echo htmlspecialchars($row['judul']); ?>" class="img-fluid">
+						<img src="data:image/jpeg;base64,<?php echo base64_encode($row['gambar']); ?>" 
+							 alt="<?php echo h($row['judul']); ?>" 
+							 class="img-fluid">
 					</a>
 					<div class="excerpt">
-                        <h2><a href="detail.php?id=<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['judul']); ?></a></h2>
+                        <h2>
+                            <a href="detail.php?id=<?php echo $row['id']; ?>">
+                                <?php echo h($row['judul']); ?>
+                            </a>
+                        </h2>
                         <div class="post-meta align-items-center text-left clearfix">
                             <span class="d-inline-block mt-1">Kategori:</span>
-                            <span class="badge bg-primary"><?php echo isset($row['kategori_nama']) ? htmlspecialchars($row['kategori_nama']) : 'Tanpa Kategori'; ?></span>
+                            <span class="badge bg-primary">
+                                <?php echo isset($row['kategori_nama']) ? h($row['kategori_nama']) : 'Tanpa Kategori'; ?>
+                            </span>
                             <span>&nbsp;-&nbsp; <?php echo date('d F Y', strtotime($row['tanggal'])); ?></span>
                         </div>
-                        <div><?php echo substr(strip_tags($row['caption']), 0, 45) . '...'; ?></div>
-                        <p><a href="detail.php?id=<?php echo $row['id']; ?>" class="read-more">Baca Selengkapnya</a></p>
+                        <div>
+                            <?php echo substr(strip_tags($row['caption']), 0, 45) . '...'; ?>
+                        </div>
+                        <p>
+                            <a href="detail.php?id=<?php echo $row['id']; ?>" class="read-more">
+                                Baca Selengkapnya
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>

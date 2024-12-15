@@ -3,7 +3,7 @@
     "builds": [
       {
         "src": "api/**/*.php",
-        "use": "now-php@latest"
+        "use": "vercel-php@0.6.0"
       },
       {
         "src": "public/**",
@@ -20,8 +20,6 @@
       "POSTGRES_USER": "postgres",
       "POSTGRES_PASSWORD": "P4EizpXzzThDXIII",
       "POSTGRES_DATABASE": "postgres",
-      "POSTGRES_PORT": "5432",
-      "SUPABASE_URL": "https://qecotzvnfguaxaahnanu.supabase.co",
-      "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlY290enZuZmd1YXhhYWhuYW51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQyNzcyNjIsImV4cCI6MjA0OTg1MzI2Mn0.Z5H8fIvAdLe3FgfPW_Dijs6iAB9f35daHeTkGtFGXJM"
+      "POSTGRES_PORT": "5432"
     }
   }
