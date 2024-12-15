@@ -4,26 +4,12 @@
   "description": "E-Artikel Project",
   "private": true,
   "scripts": {
-    "build": "echo 'No build required'",
-    "deploy": "vercel --prod"
+    "build": "echo 'No build required'"
   },
   "dependencies": {
     "vercel-php": "0.6.0"
   },
-  "devDependencies": {
-    "@vercel/node": "^2.15.1"
-  },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ferdinandandhika/eartikel.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ferdinandandhika/eartikel/issues"
-  },
-  "homepage": "https://github.com/ferdinandandhika/eartikel#readme"
+  }
 }
